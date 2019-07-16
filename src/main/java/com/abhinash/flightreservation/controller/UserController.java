@@ -1,0 +1,44 @@
+package com.abhinash.flightreservation.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.abhinash.flightreservation.entities.User;
+import com.abhinash.flightreservation.repos.UserRepository;
+
+@Controller
+public class UserController {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@RequestMapping("/showReg")
+	public String showRegisterationPage() {
+
+		return "login/registerUser";
+	}
+
+	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
+	public String userRegister(@ModelAttribute("user") User user) {
+		userRepository.save(user);
+		return "login/login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String userLogin(@RequestParam("email") String email, @RequestParam("password") String password,
+			ModelMap modelmap) {
+		User user = userRepository.findByEmail(email);
+		if (user.getPassword().equals(password)) {
+			return "findFlights";
+		} else {
+			modelmap.addAttribute("msg", "Invalid User Name or Password Please Try Again");
+		}
+		return "login/login";
+	}
+
+}
