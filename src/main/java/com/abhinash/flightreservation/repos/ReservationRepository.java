@@ -8,6 +8,6 @@ import com.abhinash.flightreservation.entities.User;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-	
+	Reservation findReservationById(Long id);
 
 }

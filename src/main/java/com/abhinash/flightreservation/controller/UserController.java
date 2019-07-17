@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.abhinash.flightreservation.entities.User;
 import com.abhinash.flightreservation.repos.UserRepository;
 
@@ -26,6 +25,12 @@ public class UserController {
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
 	public String userRegister(@ModelAttribute("user") User user) {
 		userRepository.save(user);
+		return "login/login";
+	}
+
+	@RequestMapping("/showLogin")
+	public String showLoginPage() {
+
 		return "login/login";
 	}
 

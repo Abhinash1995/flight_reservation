@@ -17,25 +17,25 @@ import com.abhinash.flightreservation.services.ReservationService;
 @Controller
 public class ReservationController {
 
-@Autowired	
- private FlightRepository flightRepository;
+	@Autowired
+	private FlightRepository flightRepository;
 
-@Autowired
-private ReservationService reservationservice;
-	
+	@Autowired
+	private ReservationService reservationservice;
+
 	@RequestMapping("/showCompleteReservation")
 	public String showCompleteReservation(@RequestParam("flightId") Long flightId, ModelMap modelMap) {
 		Flight flight = flightRepository.findFlightById(flightId);
 		modelMap.addAttribute("flight", flight);
 		return "completeReservation";
 	}
-	
-	@RequestMapping(value = "/completeReservation",method=RequestMethod.POST)
+
+	@RequestMapping(value = "/completeReservation", method = RequestMethod.POST)
 	public String completeReservation(ReservationRequest request, ModelMap modelMap) {
 		Reservation reservation = reservationservice.bookFlight(request);
-		modelMap.addAttribute("msg", "Reservation Is Completely SuccessFul With Id "+reservation.getId());
-		
+		modelMap.addAttribute("msg", "Reservation Is Completely SuccessFul With Id " + reservation.getId());
+
 		return "reservationConfirmation";
 	}
-	
+
 }

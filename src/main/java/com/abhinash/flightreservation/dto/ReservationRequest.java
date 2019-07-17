@@ -3,21 +3,21 @@ package com.abhinash.flightreservation.dto;
 public class ReservationRequest {
 
 	private Long flightId;
-	
+
 	private String passengerFirstName;
-	
+
 	private String passengerLastName;
-	
+
 	private String passengerEmail;
-	
+
 	private String passengerPhone;
-	
+
 	private String nameOnCard;
-	
+
 	private String cardNo;
-	
+
 	private String expiryDate;
-	
+
 	private String cvvNo;
 
 	public Long getFlightId() {
@@ -91,7 +91,5 @@ public class ReservationRequest {
 	public void setCvvNo(String cvvNo) {
 		this.cvvNo = cvvNo;
 	}
-	
-	
-	
+
 }
