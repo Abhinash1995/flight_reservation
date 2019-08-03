@@ -9,6 +9,8 @@ import com.abhinash.flightreservation.entities.Reservation;
 import com.abhinash.flightreservation.repos.FlightRepository;
 import com.abhinash.flightreservation.repos.PassengerRepository;
 import com.abhinash.flightreservation.repos.ReservationRepository;
+import com.abhinash.flightreservation.util.EmailUtil;
+import com.abhinash.flightreservation.util.PDFGenerator;
 
 
 @Service
@@ -23,11 +25,16 @@ public class ReservationServiceImpl implements ReservationService {
 	@Autowired
 	private ReservationRepository reservationRepositary;
 	
+	@Autowired
+	PDFGenerator pdfgenerator;
+	
+	@Autowired
+	EmailUtil emailUtil;
+	
 	@Override
 	public Reservation bookFlight(ReservationRequest request) {
 		
 		//make payment if payment fail throw exception
-		
 		Long flightId = request.getFlightId();
 		Flight flight=flightrepositary.findFlightById(flightId);
 		
@@ -37,13 +44,16 @@ public class ReservationServiceImpl implements ReservationService {
 		passenger.setEmail(request.getPassengerEmail());
 		passenger.setPhone(request.getPassengerPhone());
     	Passenger savedPassenger = passengerRepositary.save(passenger);
-		
     	Reservation reservation = new Reservation();
     	reservation.setFlight(flight);
     	reservation.setPassenger(savedPassenger);
     	reservation.setCheckedIn(false);
     	
     	Reservation savedReservation =  reservationRepositary.save(reservation);
+    	
+    	String filePath = "/home/abhinash/reservation"+savedReservation.getId()+".pdf";
+		pdfgenerator.generateItenary(savedReservation, filePath);
+		emailUtil.sendItenary(passenger.getEmail(), filePath);
     	
 		return savedReservation;
 	}
